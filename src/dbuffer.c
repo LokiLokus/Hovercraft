@@ -17,7 +17,8 @@ void dbuffer_init(dbuffer* db)
 {
 	dbuffer_init_with_capacity(db, sizeof(ureg) * 4);
 }
-bool dbuffer_is_emtpy(dbuffer* db){
+bool dbuffer_is_emtpy(dbuffer* db)
+{
 	return (db->start == db->head);
 }
 void dbuffer_free(dbuffer* db)
@@ -44,7 +45,6 @@ void dbuffer_set_capacity(dbuffer* db, ureg capacity)
 
 void dbuffer_set_bigger_capacity(dbuffer* db, ureg capacity)
 {
-	printf("resizing dbuffer: %i\n", capacity);
 	uint8_t* temp = realloc(db->start, capacity);
 	assert(temp);
 	db->head = temp + (db->head - db->start);
@@ -117,7 +117,7 @@ void dbuffer_insert_at(dbuffer* db, const void* data, void* pos, ureg size)
 	// but we need to know if we need to reallocate before we do
 	if (db->head + size > db->end)
 	{
-	ureg offs = (u8*)pos - db->start;
+		ureg offs = (u8*)pos - db->start;
 		ureg capacity = dbuffer_get_capacity(db);
 		if(size<capacity)
 		{
