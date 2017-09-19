@@ -3,6 +3,7 @@
 #include <assert.h>
 #include "dbuffer.h"
 #include <stdio.h>
+
 void dbuffer_init_with_capacity(dbuffer* db, ureg capacity)
 {
     assert(capacity >= 8);  // we do this so we don't have to bounds check in
@@ -165,83 +166,14 @@ void dbuffer_swap(dbuffer* db, void* posa, void* posb, ureg size)
         }
     }
 }
-// all push backs
-void dbuffer_push_back(dbuffer* db, const void* data, ureg size)
+
+void dbuffer_push_back_memory(dbuffer* db, const void* data, ureg size)
 {
     dbuffer_make_space(db, size);
     memcpy(db->head, data, size);
     db->head += size;
 }
 
-void dbuffer_push_back_u8(dbuffer* db, u8 d)
-{
-    *(u8*)dbuffer_claim_small_space(db,sizeof(d)) = d;
-}
-void dbuffer_push_back_s8(dbuffer* db, s8 d)
-{
-    *(s8*)dbuffer_claim_small_space(db,sizeof(d)) = d;
-}
-void dbuffer_push_back_u16(dbuffer* db, u16 d)
-{
-    *(u16*)dbuffer_claim_small_space(db,sizeof(d)) = d;
-}
-void dbuffer_push_back_s16(dbuffer* db, s16 d)
-{
-    *(s16*)dbuffer_claim_small_space(db,sizeof(d)) = d;
-}
-void dbuffer_push_back_u32(dbuffer* db, u32 d)
-{
-    *(u32*)dbuffer_claim_small_space(db,sizeof(d)) = d;
-}
-void dbuffer_push_back_s32(dbuffer* db, s32 d)
-{
-    *(s32*)dbuffer_claim_small_space(db,sizeof(d)) = d;
-}
-void dbuffer_push_back_f32(dbuffer* db, f32 d)
-{
-    *(f32*)dbuffer_claim_small_space(db,sizeof(d)) = d;
-}
-void dbuffer_push_back_u64(dbuffer* db, u64 d)
-{
-    *(u64*)dbuffer_claim_small_space(db,sizeof(d)) = d;
-}
-void dbuffer_push_back_s64(dbuffer* db, s64 d)
-{
-    *(s64*)dbuffer_claim_small_space(db,sizeof(d)) = d;
-}
-void dbuffer_push_back_f64(dbuffer* db, f64 d)
-{
-    *(f64*)dbuffer_claim_small_space(db,sizeof(d)) = d;
-}
-void dbuffer_push_back_ureg(dbuffer* db, ureg d)
-{
-    *(ureg*)dbuffer_claim_small_space(db,sizeof(d)) = d;
-}
-void dbuffer_push_back_sreg(dbuffer* db, sreg d)
-{
-    *(sreg*)dbuffer_claim_small_space(db,sizeof(d)) = d;
-}
-void dbuffer_push_back_uregh(dbuffer* db, uregh d)
-{
-    *(uregh*)dbuffer_claim_small_space(db,sizeof(d)) = d;
-}
-void dbuffer_push_back_sregh(dbuffer* db, sregh d)
-{
-    *(sregh*)dbuffer_claim_small_space(db,sizeof(d)) = d;
-}
-void dbuffer_push_back_uregq(dbuffer* db, uregq d)
-{
-    *(uregq*)dbuffer_claim_small_space(db,sizeof(d)) = d;
-}
-void dbuffer_push_back_sregq(dbuffer* db, sregq d)
-{
-    *(sregq*)dbuffer_claim_small_space(db,sizeof(d)) = d;
-}
-
-void dbuffer_push_back_ptr(dbuffer* db, void* d)
-{
-    *(void**)dbuffer_claim_small_space(db,sizeof(d)) = d;
-}
 void dbuffer_get(dbuffer* db, void* target, void* pos, ureg size)
 {
     memcpy(target, pos, size);

@@ -33,29 +33,10 @@ void dbuffer_insert_at(dbuffer* db, const void* data, void* pos, ureg size);
 void dbuffer_swap(dbuffer* db, void* posa, void* posb, ureg size);
 
 void dbuffer_pop_back(dbuffer* db, ureg size);
+void dbuffer_push_back_memory(dbuffer* db, const void* data, ureg size);
 
-// all push backs
-void dbuffer_push_back(dbuffer* db, const void* data, ureg size);
-
-void dbuffer_push_back_u8(dbuffer* db, u8 d);
-void dbuffer_push_back_s8(dbuffer* db, s8 d);
-
-void dbuffer_push_back_u16(dbuffer* db, u16 d);
-void dbuffer_push_back_s16(dbuffer* db, s16 d);
-
-void dbuffer_push_back_u32(dbuffer* db, u32 d);
-void dbuffer_push_back_s32(dbuffer* db, s32 d);
-void dbuffer_push_back_f32(dbuffer* db, f32 d);
-
-void dbuffer_push_back_u64(dbuffer* db, u64 d);
-void dbuffer_push_back_s64(dbuffer* db, s64 d);
-void dbuffer_push_back_f64(dbuffer* db, f64 d);
-
-void dbuffer_push_back_ureg(dbuffer* db, ureg d);
-void dbuffer_push_back_sreg(dbuffer* db, sreg d);
-void dbuffer_push_back_uregh(dbuffer* db, uregh d);
-void dbuffer_push_back_sregh(dbuffer* db, sregh d);
-void dbuffer_push_back_uregq(dbuffer* db, uregq d);
-void dbuffer_push_back_sregq(dbuffer* db, sregq d);
-
-void dbuffer_push_back_ptr(dbuffer* db, void* d);
+#define dbuffer_push_back(db, val) \
+	do { \
+		__auto_type _val = (val); \
+		dbuffer_push_back_memory(db, &_val, sizeof(_val)); \
+	} while(0)
