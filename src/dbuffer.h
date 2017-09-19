@@ -35,8 +35,4 @@ void dbuffer_swap(dbuffer* db, void* posa, void* posb, ureg size);
 void dbuffer_pop_back(dbuffer* db, ureg size);
 void dbuffer_push_back_memory(dbuffer* db, const void* data, ureg size);
 
-#define dbuffer_push_back(db, val) \
-	do { \
-		__auto_type _val = (val); \
-		dbuffer_push_back_memory(db, &_val, sizeof(_val)); \
-	} while(0)
+#define dbuffer_push_back(db, val) (*(typeof(val) *)dbuffer_claim_space(db, sizeof(val)) = (val))
