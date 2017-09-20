@@ -1,8 +1,8 @@
 from BaseHTTPServer import BaseHTTPRequestHandler,HTTPServer
 from cgi import parse_header, parse_multipart
 from urlparse import parse_qs
-import os.path
-import string
+import os.path,string,WiFi
+
 
 ADDR = "0.0.0.0"
 PORT = 800
@@ -17,6 +17,19 @@ class RequestHandler(BaseHTTPRequestHandler):
 
     def do_HEAD(self):
         self._set_headers()
+
+
+    def getWifiOption(self):
+        wifiList = WiFi.getAllWifi()
+        result = ""
+        for i in range(0,len(wifiList)):
+            result += '<option value="' + str(i) + '">' + wifiList[i].ssid + '</option>'
+        return result
+
+
+
+
+
 
     def parse_POST(self):
         ctype, pdict = parse_header(self.headers['content-type'])
@@ -36,7 +49,7 @@ class RequestHandler(BaseHTTPRequestHandler):
         if reqFile == '' or not os.path.isfile(reqFile):
             reqFile = WEBCONT + 'Index.html'
         f = open(reqFile, "r")
-        self.wfile.write(string.replace(f.read(),'@WLAN_DATA',"Hallo"))
+        self.wfile.write(string.replace(f.read(),'@WLAN_DATA',self.getWifiOption()))
 
     def do_POST(self):
         self._set_headers()
