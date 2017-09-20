@@ -13,6 +13,8 @@ httpd = None
 def getWifiOption():
     wifiList = WiFi.getAllWifi()
     result = ""
+    if wifiList is None:
+        return None
     for i in range(0, len(wifiList)):
         result += '<option value="' + wifiList[i].ssid + '">' + wifiList[i].ssid + '</option>'
     return result
@@ -38,14 +40,17 @@ class RequestHandler(BaseHTTPRequestHandler):
         return postvars
 
     def do_GET(self,req=None,ssid=None):
-
         if req is None:
             self._set_headers()
             reqFile = WEBCONT + self.path[1:]
             if reqFile == '' or not os.path.isfile(reqFile):
                 reqFile = WEBCONT + 'Index.html'
             f = open(reqFile, "r")
-            self.wfile.write(string.replace(f.read(),'@WLAN_DATA',getWifiOption()))
+            tmpData = getWifiOption()
+            if tmpData is None:
+                self.wfile.write("Network is down. Please restart the MainController")
+            else:
+                self.wfile.write(string.replace(f.read(),'@WLAN_DATA',tmpData))
         else:
             f = open(WEBCONT + req, "r")
             self.wfile.write(string.replace(f.read(), '@WifiSSID', ssid))
