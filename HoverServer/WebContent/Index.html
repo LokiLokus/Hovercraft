@@ -1,0 +1,36 @@
+<html>
+<head>
+	<title>Hovercraft Setup</title>
+	<link rel="stylesheet" href="bootstrap.min.css">
+</head>
+<body>
+	<div class="container text-center">
+		<h1>Hovercraft Configuration Page</h1>
+		<form method="POST">
+			<div class="text-left col-md-12">
+				<h2>Connect to WiFi</h2>
+				<div class="col-md-12 form-group">
+					<h4 class="col-md-4 control-label" for="selectedWiFi">Select WiFi:</h4>
+					<div class="col-md-4">
+						<select name="selectedWiFi" class="form-control">
+							@WLAN_DATA
+						</select>
+					</div>
+				</div>
+				<div class="form-group col-md-12">
+					<h4 class="col-md-4 control-label" for="wiFiPassword">Password:</h4>
+					<div class="col-md-4">
+						<input name="wiFiPassword" type="password">
+					</div>
+				</div>
+				<div class="form-group col-md-12">
+					<button class="btn btn-success" name="connectToWifi">Connect</button>
+				</div>
+			</div>
+		</form>
+		<div>
+			<h2 class="text-left">Use Hovercraft HotSpot</h2>
+		</div>
+	<div>
+</body>
+</html>
