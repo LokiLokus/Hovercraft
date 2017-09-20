@@ -1,4 +1,6 @@
 #include <stdlib.h>
+#include <string.h>
+#include <alloca.h>
 
 #include "../include/events.h"
 
@@ -10,6 +12,7 @@ struct handler_info
 };
 
 static struct handler_info *handlers[HOVER_NUM_EVENTS] = {NULL};
+int eventId = 0;
 
 void hover_event_init()
 {
@@ -61,4 +64,17 @@ void hover_event_emit(hover_event_t *event)
 		curr->handler(event, curr->data);
 		curr = curr->next;
 	}
+}
+
+void hover_event_emit_new(hover_event_kind_t kind, void *arg, size_t argLength)
+{
+	hover_event_t *event = alloca(sizeof(hover_event_t) + argLength);
+	event->id = ++eventId;
+	event->kind = kind;
+	event->timestamp = 0; //TODO
+	event->argLength = argLength;
+
+	if(argLength != 0)
+		memcpy(event->arg, arg, argLength);
+	hover_event_emit(event);
 }

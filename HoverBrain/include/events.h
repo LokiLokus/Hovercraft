@@ -53,4 +53,5 @@ void hover_event_init();
 void hover_event_add_handler(hover_event_kind_t kind, hover_eventhandler_t handler, void *data);
 void *hover_event_remove_handler(hover_event_kind_t kind, hover_eventhandler_t handler);
 
-void hover_event_respond(hover_event_t *event, hover_event_kind_t response, size_t arglen, void *arg);
+void hover_event_emit(hover_event_t *event);
+void hover_event_emit_new(hover_event_kind_t kind, void *arg, size_t argLength);
