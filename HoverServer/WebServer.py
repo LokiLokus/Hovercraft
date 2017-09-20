@@ -9,6 +9,14 @@ PORT = 800
 WEBCONT = "WebContent/"
 httpd = None
 
+
+def getWifiOption():
+    wifiList = WiFi.getAllWifi()
+    result = ""
+    for i in range(0, len(wifiList)):
+        result += '<option value="' + wifiList[i].ssid + '">' + wifiList[i].ssid + '</option>'
+    return result
+
 class RequestHandler(BaseHTTPRequestHandler):
     def _set_headers(self):
         self.send_response(200)
@@ -17,19 +25,6 @@ class RequestHandler(BaseHTTPRequestHandler):
 
     def do_HEAD(self):
         self._set_headers()
-
-
-    def getWifiOption(self):
-        wifiList = WiFi.getAllWifi()
-        result = ""
-        for i in range(0,len(wifiList)):
-            result += '<option value="' + str(i) + '">' + wifiList[i].ssid + '</option>'
-        return result
-
-
-
-
-
 
     def parse_POST(self):
         ctype, pdict = parse_header(self.headers['content-type'])
@@ -42,24 +37,26 @@ class RequestHandler(BaseHTTPRequestHandler):
             postvars = {}
         return postvars
 
+    def do_GET(self,req=None,ssid=None):
 
-    def do_GET(self):
-        self._set_headers()
-        reqFile = WEBCONT + self.path[1:]
-        if reqFile == '' or not os.path.isfile(reqFile):
-            reqFile = WEBCONT + 'Index.html'
-        f = open(reqFile, "r")
-        self.wfile.write(string.replace(f.read(),'@WLAN_DATA',self.getWifiOption()))
+        if req is None:
+            self._set_headers()
+            reqFile = WEBCONT + self.path[1:]
+            if reqFile == '' or not os.path.isfile(reqFile):
+                reqFile = WEBCONT + 'Index.html'
+            f = open(reqFile, "r")
+            self.wfile.write(string.replace(f.read(),'@WLAN_DATA',getWifiOption()))
+        else:
+            f = open(WEBCONT + req, "r")
+            self.wfile.write(string.replace(f.read(), '@WifiSSID', ssid))
 
     def do_POST(self):
         self._set_headers()
         postvars = self.parse_POST()
-        self.do_GET()
-        return
-
-
-
-
+        if WiFi.connectToWifi(postvars['selectedWiFi'][0],postvars['wiFiPassword'][0]):
+            self.do_GET(req="Connected.html",ssid=postvars['selectedWiFi'][0])
+        else:
+            self.do_GET(req="Error.html",ssid=postvars['selectedWiFi'][0])
 
 def start_WebServer(port="800"):
     global httpd
