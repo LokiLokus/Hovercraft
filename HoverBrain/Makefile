@@ -10,6 +10,7 @@ RUN = $(BIN)/brain
 
 OBJECTS += $(BIN)/dbuffer.o
 OBJECTS += $(BIN)/events.o
+OBJECTS += $(BIN)/log.o
 OBJECTS += $(BIN)/websocket.o
 OBJECTS += $(BIN)/main.o
 
