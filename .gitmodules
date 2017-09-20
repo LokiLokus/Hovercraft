@@ -1,0 +1,3 @@
+[submodule "HoverBrain/pigpio"]
+	path = HoverBrain/pigpio
+	url = https://github.com/joan2937/pigpio.git
