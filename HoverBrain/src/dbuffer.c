@@ -1,8 +1,8 @@
 #include <stdlib.h>
 #include <string.h>
 #include <assert.h>
-#include "dbuffer.h"
-#include <stdio.h>
+
+#include "../include/dbuffer.h"
 
 void dbuffer_init_with_capacity(dbuffer* db, ureg capacity)
 {
