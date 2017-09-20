@@ -1,10 +1,12 @@
 #include <websock.h>
+#include <stdio.h>
 #include "../include/events.h"
 
 struct context
 {
 	libwebsock_client_state *mainClient;
 };
+#define contextFromClient(client) ((struct context *)((libwebsock_context *)client->ctx)->user_data)
 
 //this callback gets registered to all events that need to be sent to the client
 static void hover_websocket_transmit_event(const hover_event_t *event, void *_ctx)
@@ -16,7 +18,7 @@ static void hover_websocket_transmit_event(const hover_event_t *event, void *_ct
 
 static int hover_websocket_onopen(libwebsock_client_state *state)
 {
-	struct context *ctx = state->data;
+	struct context *ctx = contextFromClient(state);
 	bool isMain = false;
 
 	if(ctx->mainClient == NULL)
@@ -30,7 +32,7 @@ static int hover_websocket_onopen(libwebsock_client_state *state)
 }
 static int hover_websocket_onclose(libwebsock_client_state *state)
 {
-	struct context *ctx = state->data;
+	struct context *ctx = contextFromClient(state);
 	if(ctx->mainClient == state)
 	{
 		ctx->mainClient = NULL;
@@ -40,7 +42,6 @@ static int hover_websocket_onclose(libwebsock_client_state *state)
 
 static int hover_websocket_onmessage(libwebsock_client_state *state, libwebsock_message *msg)
 {
-
 	if(msg->payload_len < sizeof(hover_event_t))
 		return 0; //not a hover event packet
 
@@ -48,7 +49,7 @@ static int hover_websocket_onmessage(libwebsock_client_state *state, libwebsock_
 	if(msg->payload_len != hover_event_size(event))
 		return 0; //malformed packet
 
-	struct context *ctx = state->data;
+	struct context *ctx = contextFromClient(state);
 	if(ctx->mainClient != state)
 	{
 		switch(event->kind)
