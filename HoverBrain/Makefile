@@ -1,16 +1,19 @@
 CC = gcc
 LD = gcc
-CFLAGS = -std=c99
-LDFLAGS =
+CFLAGS = -std=c99 -Ilibwebsock/src
+LDFLAGS = -Llibwebsock/src/.libs
+
+LIBWEBSOCK = libwebsock/src/.libs/libwebsock.so
 
 BIN = bin
-RUN = $(BIN)/ptrs
+RUN = $(BIN)/brain
 
 OBJECTS += $(BIN)/dbuffer.o
 OBJECTS += $(BIN)/events.o
+OBJECTS += $(BIN)/websocket.o
 OBJECTS += $(BIN)/main.o
 
-EXTERN_LIBS =
+EXTERN_LIBS = -lwebsock
 
 all: CFLAGS += -O2 -g
 all: $(RUN)
@@ -30,8 +33,13 @@ remove:
 clean:
 	if [ -d $(BIN) ]; then rm -r $(BIN); fi
 
-$(RUN): $(BIN) $(OBJECTS)
-	$(LD) $(LDFLAGS) $(OBJECTS) $(EXTERN_LIBS)
+$(RUN): $(LIBWEBSOCK) $(BIN) $(OBJECTS)
+	$(LD) $(LDFLAGS) $(OBJECTS) $(EXTERN_LIBS) -o $(RUN)
+
+$(LIBWEBSOCK):
+	cd libwebsock && ./autogen.sh
+	cd libwebsock && ./configure
+	$(MAKE) -C libwebsock
 
 $(BIN):
 	mkdir $(BIN)

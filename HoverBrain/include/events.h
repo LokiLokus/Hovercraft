@@ -58,3 +58,5 @@ void *hover_event_remove_handler(hover_event_kind_t kind, hover_eventhandler_t h
 
 void hover_event_emit(hover_event_t *event);
 void hover_event_emit_new(hover_event_kind_t kind, void *arg, size_t argLength);
+
+#define hover_event_size(event) (sizeof(hover_event_t) + (event)->argLength)
