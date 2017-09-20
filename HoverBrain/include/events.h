@@ -14,19 +14,22 @@
 typedef enum
 {
 	//control related events
-	HOVER_EVENT_HOVER,
-	HOVER_EVENT_FORWARD,
-	HOVER_EVENT_STEERING,
-	HOVER_EVENT_STOPALL,
-	HOVER_EVENT_TURBO,
+	HOVER_EVENT_HOVER, //sets the speed of the hover motor
+	HOVER_EVENT_FORWARD, //sets the speed of the manouvering motor
+	HOVER_EVENT_STEERING, //sets the steering
+	HOVER_EVENT_STOPALL, //stops all motors
+	HOVER_EVENT_TURBO, //enable/disable the turbo
+	HOVER_EVENT_AUTOPILOT, //enable/disable the autopilot
 
 	//network related events
-	HOVER_EVENT_PING,
-	HOVER_EVENT_PONG,
+	HOVER_EVENT_CONNECT, //emitted when a new main client connects
+	HOVER_EVENT_DISCONNECT, //emitted when the main client disconnects
+	HOVER_EVENT_PING, //sent by a client to ping the sever
+	HOVER_EVENT_PONG, //response to ping
 
 	//misc events
-	HOVER_EVENT_PHOTO,
-	HOVER_EVENT_AUTOPILOT,
+	HOVER_EVENT_INIT, //used to tell a client if he is in control
+	HOVER_EVENT_PHOTO, //used to send a photo to clients (periodically?)
 
 	HOVER_NUM_EVENTS
 } hover_event_kind_t;
