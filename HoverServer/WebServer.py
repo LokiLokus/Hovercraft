@@ -6,7 +6,7 @@ import string
 
 ADDR = "0.0.0.0"
 PORT = 800
-WEBCONT = "Webcontent/"
+WEBCONT = "WebContent/"
 httpd = None
 
 class RequestHandler(BaseHTTPRequestHandler):
@@ -32,21 +32,15 @@ class RequestHandler(BaseHTTPRequestHandler):
 
     def do_GET(self):
         self._set_headers()
-        reqFile = self.path[1:]
+        reqFile = WEBCONT + self.path[1:]
         if reqFile == '' or not os.path.isfile(reqFile):
             reqFile = WEBCONT + 'Index.html'
         f = open(reqFile, "r")
-        self.wfile.write(string.replace(f.read(),'@WLAN_DATA',getAllWifiOption()))
-
-
+        self.wfile.write(string.replace(f.read(),'@WLAN_DATA',"Hallo"))
 
     def do_POST(self):
         self._set_headers()
         postvars = self.parse_POST()
-        print(len(WlanCell))
-        scheme = Scheme.for_cell('wlan0',scheme_generator(),WlanCell[int(postvars['selectedWiFi'][0])],postvars['wiFiPassword'][0])
-        scheme.save()
-        scheme.activate()
         self.do_GET()
         return
 
@@ -57,15 +51,10 @@ class RequestHandler(BaseHTTPRequestHandler):
 def start_WebServer(port="800"):
     global httpd
     httpd = HTTPServer((ADDR, PORT), RequestHandler)
+    print("Webserver started on Port " + port)
     httpd.serve_forever()
-    print("Webserver started on Port ",port)
 
 def stop_WebServer():
     global  httpd
     httpd.shutdown()
     print("WebServer closed")
-
-
-
-
-
