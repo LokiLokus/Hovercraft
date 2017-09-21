@@ -1,6 +1,6 @@
 CC = gcc
 LD = gcc
-CFLAGS = -std=c99 -Ilibwebsock/src
+CFLAGS = -D_GNU_SOURCE -std=c99 -Ilibwebsock/src
 LDFLAGS = -Llibwebsock/src/.libs
 
 LIBWEBSOCK = libwebsock/src/.libs/libwebsock.so
@@ -10,6 +10,7 @@ RUN = $(BIN)/brain
 
 OBJECTS += $(BIN)/dbuffer.o
 OBJECTS += $(BIN)/events.o
+OBJECTS += $(BIN)/util.o
 OBJECTS += $(BIN)/log.o
 OBJECTS += $(BIN)/websocket.o
 OBJECTS += $(BIN)/main.o

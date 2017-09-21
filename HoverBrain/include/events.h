@@ -36,9 +36,8 @@ typedef enum
 
 typedef struct
 {
-	uint32_t id;
+	uint64_t timestamp; //ms since 1.1.1970
 	uint32_t kind; //hover_event_type_t
-	uint32_t timestamp; //ms since 1.1.1970
 	uint32_t argLength;
 	uint8_t arg[]; //len = argLength
 } hover_event_t;
