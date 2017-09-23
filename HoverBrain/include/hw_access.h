@@ -26,9 +26,8 @@ typedef struct {
 	bool pwm_hwa; 
 	ureg pwm_freq;	//frequency of pwm signal in hertz
 	ureg pwm_duty_cycle;	//duty cycle of pwm signal in microseconds
-	ureg pwm_min_duty_cycle; //min duty cycle (0%) 
-	ureg pwm_max_duty_cycle; //max duty cycle (100%) 
-
+	ureg pwm_min_duty_cycle; 
+	ureg pwm_max_duty_cycle; 
 } hover_hwo;
 
 int hover_hwo_init(hover_hwo* hwo, hover_hw_controller hwc*,
@@ -36,5 +35,6 @@ int hover_hwo_init(hover_hwo* hwo, hover_hw_controller hwc*,
 
 int hover_hwo_fin(hover_hwo *hwo);
 
-int hover_hwo_set_motor_speed(hover_hwo* hwo, float fraction);
-int hover_set_servo_pos(hover_hwo* hwo, float fraction);
+//we might need specialized methods for motor and servo but I
+//have no Idea what kind of values we will need so ... lets do nothing for now
+int hover_hwo_set_duty_fraction(hover_hwo* hwo, float fraction);

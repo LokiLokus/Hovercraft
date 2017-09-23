@@ -65,7 +65,7 @@ int hover_hwo_init(hover_hwo* hwo, hover_hw_controller hwc*,
 				   bool hardware_assisted, hover_hwo_type hwot)
 {
 	hwo->hwc = hwc;
-	hwo->hwa = hardware_assisted;
+	hwo->pwm_hwa = hardware_assisted;
 	hwo->type = hwot;
 	//we need to find out what kind of frequencies and duty cycles are required
 	//for now we use some reasonable guessed values
@@ -83,17 +83,20 @@ int hover_hwo_init(hover_hwo* hwo, hover_hw_controller hwc*,
 	}
 	hwo->gpiop = hover_request_gpiop(hwc, hwo->pwm_hwa);
 	if(hwo->gpiop == HOVER_INVALID_GPIOP)return HOVER_INVALID_GPIOP;
-	if(hwo->hwa){
-		gpioHardwarePWM(hwo->gpiop, hwo->freq, 0);
+	if(hwo->pwm_hwa){
+		gpioHardwarePWM(hwo->gpiop, hwo->pwm_freq, 0);
 	}
 	else{
+		//see http://abyz.co.uk/rpi/pigpio/cif.html#gpioServo
 		gpioPWM(hwo->gpio_id, 0);
+		gpioSetPWMfrequency(hwo->gpio_id, hwo->pwm_freq);
+		gpioSetPWMrange(hwo->gpio_id, 1000000 / hwo->pwm_freq);
 	}
 }
 
 int hover_hwo_fin(hover_hwo *hwo){
 	int ec = 0;
-	if(hwo->hwa_pwm == false){
+	if(hwo->pwm_hwa == false){
 		ec = gpioPWM(hwo->gpio_id, 0);
 	}
 	else{
@@ -101,4 +104,17 @@ int hover_hwo_fin(hover_hwo *hwo){
 	}
 	hover_set_gpiop(hwo->hwc,hwo->gpiop,false);
 	return ec;	
+}
+int hover_hwo_set_duty_fraction(hover_hwo* hwo, float fraction){
+	//it's theoretically cheaper to compute this if we store the diff instead
+	//but for now I don't care
+	u32 duty = hwo->pwm_min_duty_cycle + 
+			   (hwo->pwm_max_duty_cycle - hwo->pwm_min_duty_cycle) * fraction; 
+	if(hwo->pwm_hwa){
+		gpioHardwarePWM(hwo->gpiop, hwo->freq, duty);
+	}
+	else{
+		gpioPWM(hwo->gpiop, duty);
+	}
+	
 }
