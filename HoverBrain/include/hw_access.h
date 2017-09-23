@@ -1,7 +1,7 @@
 #pragma once
 #include <include/types.h>
 #include <include/dbuffer.h>
-//HWA stands for hardware assisted
+
 typedef enum {
 	HOVER_HWO_TYPE_SERVO,
 	HOVER_HWO_TYPE_MOTOR,
@@ -31,9 +31,8 @@ typedef struct {
 
 } hover_hwo;
 
-
 int hover_hwo_init(hover_hwo* hwo, hover_hw_controller hwc*,
-				   bool hwa, hover_hwo_type hwot);
+				   bool hardware_assisted, hover_hwo_type hwot);
 
 int hover_hwo_fin(hover_hwo *hwo);
 
