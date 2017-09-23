@@ -62,10 +62,10 @@ u8 hover_request_gpiop( hover_hw_controller hwc*, bool hwa){
 }
 
 int hover_hwo_init(hover_hwo* hwo, hover_hw_controller hwc*,
-				   bool hwa, hover_hwo_type hwot)
+				   bool hardware_assisted, hover_hwo_type hwot)
 {
 	hwo->hwc = hwc;
-	hwo->hwa = hwa;
+	hwo->hwa = hardware_assisted;
 	hwo->type = hwot;
 	//we need to find out what kind of frequencies and duty cycles are required
 	//for now we use some reasonable guessed values
