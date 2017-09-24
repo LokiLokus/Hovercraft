@@ -1,6 +1,5 @@
 #pragma once
-#include <include/types.h>
-#include <include/dbuffer.h>
+#include "types.h"
 
 typedef enum {
 	HOVER_HWO_TYPE_SERVO,
@@ -30,7 +29,7 @@ typedef struct {
 	ureg pwm_max_duty_cycle; 
 } hover_hwo;
 
-int hover_hwo_init(hover_hwo* hwo, hover_hw_controller hwc*,
+int hover_hwo_init(hover_hwo* hwo, hover_hw_controller* hwc,
 				   bool hardware_assisted, hover_hwo_type hwot);
 
 int hover_hwo_fin(hover_hwo *hwo);
