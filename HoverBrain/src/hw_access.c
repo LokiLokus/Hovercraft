@@ -113,7 +113,7 @@ int hover_hwo_set_duty_fraction(hover_hwo* hwo, float fraction){
 	//but for now I don't care
 	u32 duty = hwo->pwm_min_duty_cycle +
 			   (hwo->pwm_max_duty_cycle - hwo->pwm_min_duty_cycle) * fraction;
-
+	duty *= hwo->pwm_freq;
 	printf("duty = %lu\n", duty);
 	if(hwo->pwm_hwa){
 		gpioHardwarePWM(hwo->gpiop, hwo->pwm_freq, duty);
