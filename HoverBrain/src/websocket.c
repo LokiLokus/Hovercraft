@@ -68,6 +68,7 @@ static int hover_websocket_onmessage(libwebsock_client_state *state, libwebsock_
 void hover_websocket_run(char *address, char *port)
 {
 	struct context *ctx = malloc(sizeof(struct context));
+	ctx->mainClient = NULL;
 
 	hover_event_add_handler(HOVER_EVENT_PONG, hover_websocket_transmit_event, ctx);
 	hover_event_add_handler(HOVER_EVENT_INIT, hover_websocket_transmit_event, ctx);

@@ -13,11 +13,11 @@ OBJECTS += $(BIN)/dbuffer.o
 OBJECTS += $(BIN)/events.o
 OBJECTS += $(BIN)/util.o
 OBJECTS += $(BIN)/log.o
-#OBJECTS += $(BIN)/websocket.o
+OBJECTS += $(BIN)/websocket.o
 OBJECTS += $(BIN)/main.o
 OBJECTS += $(BIN)/hw_access.o
 
-EXTERN_LIBS = -lpigpio -pthread
+EXTERN_LIBS = -lwebsock -lpigpio -pthread
 
 all: CFLAGS += -O2 -g
 all: $(RUN)
