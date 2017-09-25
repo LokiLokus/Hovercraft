@@ -20,9 +20,12 @@ def getWifiOption():
     return result
 
 class RequestHandler(BaseHTTPRequestHandler):
-    def _set_headers(self):
+    def _set_headers(self,css=False):
         self.send_response(200)
-        self.send_header('Content-type', 'text/html')
+        if css:
+            self.send_header('Content-type', 'text/css')
+        else:
+            self.send_header('Content-type', 'text/html')
         self.end_headers()
 
     def do_HEAD(self):
@@ -41,7 +44,7 @@ class RequestHandler(BaseHTTPRequestHandler):
 
     def do_GET(self,req=None,ssid=None):
         if req is None:
-            self._set_headers()
+            self._set_headers(css=str.endswith(self.path[1:],"css"))
             reqFile = WEBCONT + self.path[1:]
             if reqFile == '' or not os.path.isfile(reqFile):
                 reqFile = WEBCONT + 'Index.html'
@@ -52,11 +55,11 @@ class RequestHandler(BaseHTTPRequestHandler):
             else:
                 self.wfile.write(string.replace(f.read(),'@WLAN_DATA',tmpData))
         else:
+            self._set_headers()
             f = open(WEBCONT + req, "r")
             self.wfile.write(string.replace(f.read(), '@WifiSSID', ssid))
 
     def do_POST(self):
-        self._set_headers()
         postvars = self.parse_POST()
         if WiFi.connectToWifi(postvars['selectedWiFi'][0],postvars['wiFiPassword'][0]):
             self.do_GET(req="Connected.html",ssid=postvars['selectedWiFi'][0])
