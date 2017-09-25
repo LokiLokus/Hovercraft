@@ -37,7 +37,7 @@ remove:
 clean:
 	if [ -d $(BIN) ]; then rm -r $(BIN); fi
 
-$(RUN): $(LIBWEBSOCK) $(BIN) $(OBJECTS)
+$(RUN): $(LIBPIGPIO) $(LIBWEBSOCK) $(BIN) $(OBJECTS)
 	$(LD) $(LDFLAGS) $(OBJECTS) $(EXTERN_LIBS) -o $(RUN)
 
 $(LIBWEBSOCK):
