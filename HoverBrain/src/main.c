@@ -1,4 +1,5 @@
 #include "../include/events.h"
+#include "../config.h"
 #include <unistd.h>
 
 void hover_log_init(const char *file);
@@ -8,13 +9,16 @@ void hover_websocket_run(char *addr, char *port);
 int main(int argc, char **argv)
 {
 	hover_event_init();
-	hover_log_init("/dev/stdout");
+	hover_log_init(HOVER_CONFIG_LOGFILE);
 
-	//TODO are the ports correct?
-	hover_hardware_init(13, 12, 11);
+	hover_hardware_init(
+		HOVER_CONFIG_PORT_STEERING,
+		HOVER_CONFIG_PORT_HOVER,
+		HOVER_CONFIG_PORT_FORWARD
+	);
 
 	//TODO init other things
 
 	//this needs to be the last line of main as the function never returns
-	hover_websocket_run("0.0.0.0", "1337");
+	hover_websocket_run(HOVER_CONFIG_WEBSOCKET_ADDRESS, HOVER_CONFIG_WEBSOCKET_PORT);
 }
