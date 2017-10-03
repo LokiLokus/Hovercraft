@@ -1,6 +1,10 @@
 var eventId = document.getElementById("eventId");
-var eventLittleEndian = document.getElementById("littleEndian");
 var eventArgs = document.getElementById("eventArgs");
+var eventLittleEndian = document.getElementById("littleEndian");
+var wsUrl = document.getElementById("wsUrl");
+
+var currentWsUrl = "";
+var ws;
 
 var events = [
 	//control related events
@@ -32,9 +36,21 @@ for(var i = 0; i < events.length; i++)
 
 function sendEvent()
 {
+	if(wsUrl.value != currentWsUrl)
+	{
+		ws = new WebSocket(wsUrl.value);
+		currentWsUrl = wsUrl.value;
+
+		ws.onopen = sendEvent;
+		return;
+	}
+
 	var id = eventId.selectedIndex;
 	var args = eventArgs.value.split(" ");
 	var littleEndian = eventLittleEndian.checked;
+
+	if(args.length == 1 && args[0].trim() == "")
+		args = [];
 
 	var buff = new ArrayBuffer(16 + args.length);
 	var data = new DataView(buff);
@@ -65,4 +81,6 @@ function sendEvent()
 		dump += " " + ("00" + data.getUint8(i).toString(16)).slice(-2);
 	}
 	console.log(id, args, dump.trim());
+
+	ws.send(buff);
 }
