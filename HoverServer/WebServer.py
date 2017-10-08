@@ -5,7 +5,7 @@ import os.path,string,WiFi
 
 
 ADDR = "0.0.0.0"
-PORT = 800
+PORT = 8000
 WEBCONT = "WebContent/"
 httpd = None
 

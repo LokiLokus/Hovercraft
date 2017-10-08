@@ -52,7 +52,7 @@ function sendEvent()
 	if(args.length == 1 && args[0].trim() == "")
 		args = [];
 
-	var buff = new ArrayBuffer(16 + args.length);
+	var buff = new ArrayBuffer(16 + args.length * 4);
 	var data = new DataView(buff);
 
 	var now = Date.now();
@@ -68,11 +68,12 @@ function sendEvent()
 	}
 
 	data.setUint32(8, id, littleEndian);
-	data.setUint32(12, args.length, littleEndian);
+	data.setUint32(12, args.length * 4, littleEndian);
 
 	for(var i = 0; i < args.length; i++)
 	{
-		data.setUint8(16 + i, parseInt(args[i]));
+		data.setInt32(16 + i * 4, parseInt(args[i]), littleEndian);
+		//data.setUint8(16 + i, parseInt(args[i]));
 	}
 
 	var dump = "";
