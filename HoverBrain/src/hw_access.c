@@ -119,6 +119,11 @@ int hover_hwo_fin(hover_hwo* hwo)
 
 int hover_hwo_set_duty_fraction(hover_hwo* hwo, float fraction)
 {
+	if(fraction > 1)
+		fraction = 1;
+	if(fraction < 0)
+		fraction = 0;
+
 	u32 duty = hwo->pwm_min_duty_cycle;
 	duty += (hwo->pwm_max_duty_cycle - hwo->pwm_min_duty_cycle) * fraction;
 	duty *= hwo->pwm_freq;
