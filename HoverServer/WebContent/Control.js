@@ -34,6 +34,18 @@ for(var i = 0; i < events.length; i++)
 	eventId.appendChild(opt);
 }
 
+/*setInterval(function()
+{
+	var val = parseInt(eventArgs.value);
+	if(val >= 500)
+		val = -400;
+	else if(val < 500)
+		val = 1400;
+
+	eventArgs.value = val;
+	sendEvent();
+}, 600);*/
+
 function sendEvent()
 {
 	if(wsUrl.value != currentWsUrl)
