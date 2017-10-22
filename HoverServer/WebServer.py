@@ -66,7 +66,7 @@ class RequestHandler(BaseHTTPRequestHandler):
         else:
             self.do_GET(req="Error.html",ssid=postvars['selectedWiFi'][0])
 
-def start_WebServer(port="800"):
+def start_WebServer(port=str(PORT)):
     global httpd
     httpd = HTTPServer((ADDR, PORT), RequestHandler)
     print("Webserver started on Port " + port)
