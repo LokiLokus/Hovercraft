@@ -5,15 +5,13 @@
 #include <pigpio.h>
 
 
-//TODO are these values correct?
 #define HOVER_SERVO_FREQ 50
-#define HOVER_SERVO_CYCLE_MIN 1000
-#define HOVER_SERVO_CYCLE_MAX 2000
+#define HOVER_SERVO_CYCLE_MIN 500
+#define HOVER_SERVO_CYCLE_MAX 2500
 
-//TODO are these values correct?
 #define HOVER_MOTOR_FREQ 50
-#define HOVER_MOTOR_CYCLE_MIN 0
-#define HOVER_MOTOR_CYCLE_MAX 2500
+#define HOVER_MOTOR_CYCLE_MIN 1000
+#define HOVER_MOTOR_CYCLE_MAX 2000
 
 typedef enum {
 	HOVER_HWO_TYPE_SERVO,
@@ -98,9 +96,9 @@ int hover_hwo_init(hover_hwo* hwo, hover_hw_controller* hwc,
 		default:
 			hwo->pwm_hwa = false;
 			//see http://abyz.co.uk/rpi/pigpio/cif.html#gpioServo
-			gpioPWM(hwo->gpiop, 0);
 			gpioSetPWMfrequency(hwo->gpiop, hwo->pwm_freq);
-			gpioSetPWMrange(hwo->gpiop, 1000000 / hwo->pwm_freq);
+			gpioSetPWMrange(hwo->gpiop, 20000);
+			gpioPWM(hwo->gpiop, 0);
 			break;
 	}
 }
@@ -126,9 +124,9 @@ int hover_hwo_set_duty_fraction(hover_hwo* hwo, float fraction)
 
 	u32 duty = hwo->pwm_min_duty_cycle;
 	duty += (hwo->pwm_max_duty_cycle - hwo->pwm_min_duty_cycle) * fraction;
-	duty *= hwo->pwm_freq;
 
 	if(hwo->pwm_hwa){
+		duty *= hwo->pwm_freq;
 		gpioHardwarePWM(hwo->gpiop, hwo->pwm_freq, duty);
 	}
 	else{
