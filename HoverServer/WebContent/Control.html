@@ -20,23 +20,24 @@
 				</div>
 			</div>
 			<div class="col-md-12 form-group">
-				<h4 class="col-md-4 control-label" for="selectedWiFi">Little endian:</h4>
-				<div class="col-md-4">
-					<input id="littleEndian" type="checkbox" checked class="form-control">
-				</div>
-			</div>
-			<div class="col-md-12 form-group">
 				<h4 class="col-md-4 control-label" for="selectedWiFi">Websocket URL:</h4>
 				<div class="col-md-4">
 					<input id="wsUrl" type="text" class="form-control" value="ws://localhost:1337">
 				</div>
 			</div>
+			<div class="col-md-12 form-group">
+					<h4 class="col-md-4 control-label" for="selectedWiFi">Joystick sensitivity:</h4>
+					<div class="col-md-4">
+						<input id="joystickSensitivity" type="number" class="form-control" value="200">
+					</div>
+				</div>
 			<div class="form-group col-md-12">
-				<button onclick="sendEvent()" class="btn btn-success">Send</button>
+				<button onclick="sendEventFromForm()" class="btn btn-success">Send</button>
 			</div>
-			<input type="range" min="0" max="1000" value="0" step="1" oninput='document.getElementById("eventArgs").value = this.value;sendEvent();' />
 		</div>
 	<div>
+
+	<canvas id="joystick" width="500px" height="500px" />
 
 	<script type="text/javascript" src="Control.js"></script>
 </body>
